@@ -49,6 +49,7 @@ Route::post("register",function(){
 		"email"=>"required|email");
 
 	if(!Validator::make(Input::all(),$rules)->fails()){
+		if(!User::check_username(Input::get("username")) && !User::check_email(Input::get("email"))){
 		$user=new User();
 		$user->username=Input::get("username");
 		$user->password=md5(sha1(Input::get("password")));
@@ -56,6 +57,7 @@ Route::post("register",function(){
 		$user->save();
 		Session::put("register_success",Input::get('username')." đã đăng ký thành công");
 		return Redirect::to("login");
+		}
 	}
 });
 
